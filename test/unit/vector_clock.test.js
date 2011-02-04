@@ -79,6 +79,16 @@ module.exports = {
     var vca = VectorClock.new({"o":1,"q":1, "r": 1});
     var vcb = VectorClock.new({"o":1,"q":1, "s": 1});
     vca.descendsDirecltyFrom(vcb).should.eql(false);
+  },
+  
+  'increment should create a direct descendant': function() {
+    var vcRaw = {a: 1, b: 1};
+    var vca = VectorClock.new(vcRaw);
+    var vcb = VectorClock.new(vcRaw);
+    vca.increment("a");
+    vca.descendsDirecltyFrom(vcb).should.eql(true);
+    vca.increment("a");
+    vca.descendsDirecltyFrom(vcb).should.eql(false);
   }
 
 };
