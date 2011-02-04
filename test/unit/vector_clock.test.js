@@ -63,8 +63,22 @@ module.exports = {
     vca.descendsDirecltyFrom(vcb).should.eql(false);
   },
 
+  'shoule check unpresent keys with 0 value reverse': function() {
+    var vca = VectorClock.new({"o":1,"q":1, "r": 1});
+    var vcb = VectorClock.new({"o":1,"q":1});
+    vca.descendsDirecltyFrom(vcb).should.eql(true);
+  },
 
-  
-  
-  
-}
+  'shoule check unpresent keys with 0 value reverse 2': function() {
+    var vca = VectorClock.new({"o":1,"q":1, "r": 2});
+    var vcb = VectorClock.new({"o":1,"q":1});
+    vca.descendsDirecltyFrom(vcb).should.eql(false);
+  },
+
+  'shoule check unpresent keys with 0 value reverse 3': function() {
+    var vca = VectorClock.new({"o":1,"q":1, "r": 1});
+    var vcb = VectorClock.new({"o":1,"q":1, "s": 1});
+    vca.descendsDirecltyFrom(vcb).should.eql(false);
+  }
+
+};
