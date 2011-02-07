@@ -27,55 +27,55 @@ module.exports = {
     VectorClock.new.should.eql(VectorClock.parse);
   },
   
-  'true direct descendant': function() {
+  'descendsDirecltyFrom true direct descendant': function() {
     var vca = VectorClock.new({"a":1,"b":2});
     var vcb = VectorClock.new({"a":1,"b":1});
     vca.descendsDirecltyFrom(vcb).should.eql(true);
   },
 
-  'false direct descendant': function() {
+  'descendsDirecltyFrom false direct descendant': function() {
     var vca = VectorClock.new({"c":1,"d":1});
     var vcb = VectorClock.new({"c":1,"d":1});
     vca.descendsDirecltyFrom(vcb).should.eql(false);
   },
 
-  'false direct descendant 2': function() {
+  'descendsDirecltyFrom false direct descendant 2': function() {
     var vca = VectorClock.new({"e":1,"f":1});
     var vcb = VectorClock.new({"e":1,"f":2});
     vca.descendsDirecltyFrom(vcb).should.eql(false);
   },
 
-  'not present defaults to zero': function() {
+  'descendsDirecltyFrom not present defaults to zero': function() {
     var vca = VectorClock.new({"g":1,"h":1});
     var vcb = VectorClock.new({"g":1});
     vca.descendsDirecltyFrom(vcb).should.eql(true);
   },
 
-  'shoule check unpresent keys with 0 value': function() {
+  'descendsDirecltyFrom should check unpresent keys with 0 value': function() {
     var vca = VectorClock.new({"i":1,"j":1});
     var vcb = VectorClock.new({"i":1,"j":0, "k":0});
     vca.descendsDirecltyFrom(vcb).should.eql(true);
   },
 
-  'shoule check unpresent keys': function() {
+  'descendsDirecltyFrom should check unpresent keys': function() {
     var vca = VectorClock.new({"l":1,"m":1});
     var vcb = VectorClock.new({"l":1,"n":1});
     vca.descendsDirecltyFrom(vcb).should.eql(false);
   },
 
-  'shoule check unpresent keys with 0 value reverse': function() {
+  'should check unpresent keys with 0 value reverse': function() {
     var vca = VectorClock.new({"o":1,"q":1, "r": 1});
     var vcb = VectorClock.new({"o":1,"q":1});
     vca.descendsDirecltyFrom(vcb).should.eql(true);
   },
 
-  'shoule check unpresent keys with 0 value reverse 2': function() {
+  'should check unpresent keys with 0 value reverse 2': function() {
     var vca = VectorClock.new({"o":1,"q":1, "r": 2});
     var vcb = VectorClock.new({"o":1,"q":1});
     vca.descendsDirecltyFrom(vcb).should.eql(false);
   },
 
-  'shoule check unpresent keys with 0 value reverse 3': function() {
+  'should check unpresent keys with 0 value reverse 3': function() {
     var vca = VectorClock.new({"o":1,"q":1, "r": 1});
     var vcb = VectorClock.new({"o":1,"q":1, "s": 1});
     vca.descendsDirecltyFrom(vcb).should.eql(false);
@@ -89,6 +89,36 @@ module.exports = {
     vca.descendsDirecltyFrom(vcb).should.eql(true);
     vca.increment("a");
     vca.descendsDirecltyFrom(vcb).should.eql(false);
+  },
+  
+  'descendsFrom same is ascendant': function() {
+    var vcRaw = {a: 1, b: 1};
+    var vca = VectorClock.new(vcRaw);
+    var vcb = VectorClock.new(vcRaw);
+    vca.descendsFrom(vcb).should.eql(true);
+  },
+
+  'descendsFrom plus one is ascendant': function() {
+    var vcRaw = {a: 1, b: 1};
+    var vca = VectorClock.new(vcRaw);
+    var vcb = VectorClock.new(vcRaw);
+    vca.increment('a');
+    vca.descendsFrom(vcb).should.eql(true);
+  },
+
+  'descendsFrom plus 2 is ascendant': function() {
+    var vcRaw = {a: 1, b: 1};
+    var vca = VectorClock.new(vcRaw);
+    var vcb = VectorClock.new(vcRaw);
+    vca.increment('a');
+    vca.increment('a');
+    vca.descendsFrom(vcb).should.eql(true);
+  },
+
+  'descendsFrom plus 2 is ascendant': function() {
+    var vca = VectorClock.new({a: 2, b: 1});
+    var vcb = VectorClock.new({a: 1, b: 2});
+    vca.descendsFrom(vcb).should.eql(false);
   }
 
 };
