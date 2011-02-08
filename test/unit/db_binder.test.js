@@ -2,7 +2,7 @@ var path     = require('path'),
     fs       = require('fs'),
     should   = require('should'),
     assert   = require('assert'),
-    dbBinder = require('../../lib/wring/db_binder.js'),
+    dbBinder = require('../../lib/wring/db/db_binder.js'),
     Alfred   = require('Alfred');
 
 /* Setup */
@@ -28,7 +28,7 @@ var DB_PATH = __dirname + '/../../tmp/db';
 
 module.exports = {
   'db_binder should work': function() {
-    Alfred.open(DB_PATH, function(err, db) {
+    var db = Alfred.open(DB_PATH, function(err, db) {
       assert.isNull(err);
       
       var getterCalled = false;
@@ -48,9 +48,8 @@ module.exports = {
           oldPut.call(keyMap, key, value, callback);
         }
       };
-      
+
       dbBinder.bind(db, getter, putter);
-      
       db.ensure('users', function(err, keyMap) {
         assert.isNull(err);
         
@@ -60,11 +59,27 @@ module.exports = {
           
           keyMap.get('a', function(err, value) {
             assert.isNull(err);
-            value.should.eql('b');
             getterCalled.should.eql(true);
             
             db.close(function(err) {
               assert.isNull(err);
+              Alfred.open(DB_PATH, function(err, db) {
+                assert.isNull(err);
+                putterCalled = false;
+                getterCalled = false;
+                dbBinder.bind(db, getter, putter);
+                db.users.put('b', 'a', function(err) {
+                  assert.isNull(err);
+                  putterCalled.should.eql(true);
+                  db.users.get('b', function(err) {
+                    assert.isNull(err);
+                    getterCalled.should.eql(true);
+                    db.close(function(err) {
+                      assert.isNull(err);
+                    });
+                  });
+                });
+              });
             });
             
           });
@@ -72,5 +87,8 @@ module.exports = {
       });
       
     });
-  },
+    
+
+    
+  }
 };
