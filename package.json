@@ -20,6 +20,7 @@
 , "scripts" : {}
 , "dependencies" :
   {
+    "alfred": ">= 0.5.1b2"
   } 
 , "licenses" :
   [ { "type" : "MIT"
