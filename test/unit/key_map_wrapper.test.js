@@ -60,7 +60,7 @@ mockKeyMap = {
   }
 };
 
-var wrapper = KeyMapWrapper.wrap('ACTOR1', mockKeyMap, mockKeyMap.get, mockKeyMap.put);
+var wrapper = KeyMapWrapper.wrap('ACTOR1', mockKeyMap);
 
 
 /* Tests */

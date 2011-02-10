@@ -24,6 +24,29 @@ var DB_PATH = __dirname + '/../../tmp/db';
   }
 })(DB_PATH);
 
+var getterCalled = false;
+var putterCalled = false;
+
+var Wrapper = {
+  wrap: function(actorId, keyMap) {
+    var oldGet = keyMap.get,
+        oldPut = keyMap.put;
+    return {
+      get: function(key, callback) {
+        getterCalled.should.eql(false);
+        getterCalled = true;
+        oldGet.call(keyMap, key, callback);
+      },
+      
+      put: function(key, value, callback) {
+        putterCalled.should.eql(false);
+        putterCalled = true;
+        oldPut.call(keyMap, key, value, callback);
+      }
+    }
+  }
+}
+
 /* Tests */
 
 module.exports = {
@@ -31,25 +54,7 @@ module.exports = {
     var db = Alfred.open(DB_PATH, function(err, db) {
       assert.isNull(err);
       
-      var getterCalled = false;
-      var getter = function(keyMap, oldGet) {
-        return function(key, callback) {
-          getterCalled.should.eql(false);
-          getterCalled = true;
-          oldGet.call(keyMap, key, callback);
-        }
-      };
-
-      var putterCalled = false;
-      var putter = function(keyMap, oldPut) {
-        return function(key, value, callback) {
-          putterCalled.should.eql(false);
-          putterCalled = true;
-          oldPut.call(keyMap, key, value, callback);
-        }
-      };
-
-      dbBinder.bind(db, getter, putter);
+      dbBinder.bind('ACTOR1', db, Wrapper);
       db.ensure('users', function(err, keyMap) {
         assert.isNull(err);
         
@@ -67,7 +72,7 @@ module.exports = {
                 assert.isNull(err);
                 putterCalled = false;
                 getterCalled = false;
-                dbBinder.bind(db, getter, putter);
+                dbBinder.bind('ACTOR1', db, Wrapper);
                 db.users.put('b', 'a', function(err) {
                   assert.isNull(err);
                   putterCalled.should.eql(true);
@@ -87,8 +92,5 @@ module.exports = {
       });
       
     });
-    
-
-    
   }
 };
