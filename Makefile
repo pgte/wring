@@ -1,5 +1,5 @@
 mkdirtmp:
-	mkdir -p tmp/db
+	mkdir -p tmp/db && mkdir -p tmp/db2
   
 test: mkdirtmp
 	expresso test/unit/*.test.js
