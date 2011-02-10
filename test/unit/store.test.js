@@ -39,6 +39,17 @@ module.exports = {
             value.should.be.eql('b');
             store.close(function(err) {
               assert.isNull(err);
+              Store.open(DB_PATH, function(err, store) {
+                assert.isNull(err);
+                assert.isNotNull(store);
+                keyMap.get('a', function(err, value, gotVersion) {
+                  assert.isNull(err);
+                  gotVersion.should.eql(version);
+                  store.close(function(err) {
+                    assert.isNull(err);
+                  });
+                });
+              });
             });
           });
         });
