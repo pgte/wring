@@ -19,6 +19,10 @@ module.exports = {
   
   "A and B sould yield C": function() {
     DeepMerge.merge(a, b).should.eql(c);
+  },
+
+  "1 and 2 should yield 2": function() {
+    DeepMerge.merge(1, 2).should.eql(2);
   }
 
 };
