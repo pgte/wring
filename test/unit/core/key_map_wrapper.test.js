@@ -1,8 +1,8 @@
 var should        = require('should'),
     assert        = require('assert'),
     util          = require('util'),
-    KeyMapWrapper = require('../../lib/wring/db/key_map_wrapper'),
-    VersionConflictError = require('../../lib/wring/exceptions/version_conflict_error');
+    KeyMapWrapper = require('../../../lib/wring/db/key_map_wrapper'),
+    VersionConflictError = require('../../../lib/wring/exceptions/version_conflict_error');
 
 /* Setup */
 

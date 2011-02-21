@@ -1,11 +1,11 @@
-var Store  = require('../../lib/wring/store'),
+var Store  = require('../../../lib/wring/store'),
     assert = require('assert'),
     path   = require('path'),
     fs     = require('fs');
 
 require('should');
 
-var DB_PATH = __dirname + '/../../tmp/db2';
+var DB_PATH = __dirname + '/../../../tmp/db2';
 
 (function removeFilesUnder(dir) {
   if (path.existsSync(dir)) {
@@ -29,6 +29,7 @@ module.exports = {
       assert.isNotNull(store);
       store.should.have.property('ensure');
       store.ensure('users', function(err, keyMap) {
+        assert.isNull(err);
         keyMap.put('a', 'b', function(err, version) {
           assert.isNull(err);
           assert.isNotNull(version);
@@ -56,4 +57,4 @@ module.exports = {
       });
     })
   }
-}
+};

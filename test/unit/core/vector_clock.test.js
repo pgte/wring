@@ -1,5 +1,5 @@
 var should = require('should')
-  , VectorClock = require('../../lib/wring/util/vector_clock.js');
+  , VectorClock = require('../../../lib/wring/util/vector_clock.js');
 
 module.exports = {
   

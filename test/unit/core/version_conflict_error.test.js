@@ -1,4 +1,4 @@
-var VersionConflictError = require('../../lib/wring/exceptions/version_conflict_error');
+var VersionConflictError = require('../../../lib/wring/exceptions/version_conflict_error');
 
 module.exports = {
   
